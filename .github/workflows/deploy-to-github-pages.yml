@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'src/main/resources/db/migration/**.sql'
-      - '.github/workflows/deploy-to-github-pag'
+      - '.github/workflows/deploy-to-github-pages.yml'
 
 jobs:
   build-and-upload:
