@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>tbls-demo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>tbls demo</name>
+  <description>Demo project for tbls</description>
+
+  <properties>
+    <java.version>17</java.version>
+    <postgresql.version>42.5.4</postgresql.version>
+    <flyway-maven-plugin.version>9.8.3</flyway-maven-plugin.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>${flyway-maven-plugin.version}</version>
+        <configuration>
+          <url>jdbc:postgresql://localhost:5432/sample</url>
+          <user>user</user>
+          <password>pass</password>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
