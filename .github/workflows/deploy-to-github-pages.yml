@@ -1,0 +1,56 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/main/resources/db/migration/**.sql'
+      - '.github/workflows/deploy-to-github-pag'
+
+jobs:
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up tbls
+        uses: k1low/setup-tbls@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+          cache: maven
+
+     - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      - name: Startup Containsers
+        run: docker-compose -f ./docker-compose.yml up -d
+      
+      - name: Waiting for Starting Containers
+        run: sleep 30
+
+      - name: Migrate Database Schemas
+        run: mvn -P integration-test flyway:migrate
+
+      - name: Run tbls for generate database document
+        run: tbls doc
+        working-directory: ./docs
+
+      - name: show result
+        run: ls -l
+        working-directory: ./docs
+
+      - name: Clean up Docker images
+        if: always()
+        run: docker-compose down --rmi all --volumes
+        continue-on-error: true
