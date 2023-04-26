@@ -46,11 +46,26 @@ jobs:
         run: tbls doc
         working-directory: ./docs
 
-      - name: show result
-        run: ls -l
-        working-directory: ./docs
+      - name: Upload to artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: '.'
 
       - name: Clean up Docker images
         if: always()
         run: docker-compose down --rmi all --volumes
         continue-on-error: true
+
+  deploy:
+    needs: build-and-upload
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
