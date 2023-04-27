@@ -29,7 +29,7 @@ lint:
 comments:
   -
     table: employees
-    tableComment: 従業員テーブル
+    tableComment: 従業員テーブルです。
     columnComments:
       id: 従業員を一意に特定する ID
       first_name: 従業員の名
