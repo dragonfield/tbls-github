@@ -39,13 +39,13 @@ jobs:
         run: docker-compose -f ./docker-compose.yml up -d
       
       - name: Waiting for Starting Containers
-        run: sleep 30
+        run: sleep 10
 
       - name: Migrate Database Schemas
         run: mvn -P integration-test flyway:migrate
 
       - name: Run tbls for generate database document
-        run: tbls doc
+        run: tbls doc --force
         working-directory: ./docs
 
       - name: commit database document
