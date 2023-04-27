@@ -8,7 +8,7 @@
 
 | 名前 | カラム一覧 | コメント | タイプ |
 | ---- | ------- | ------- | ---- |
-| [public.employees](public.employees.md) | 3 | 従業員テーブル | BASE TABLE |
+| [public.employees](public.employees.md) | 3 | 従業員テーブルです。 | BASE TABLE |
 
 ## ER 図
 
