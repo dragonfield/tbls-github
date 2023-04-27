@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'src/main/resources/db/migration/**.sql'
+      - 'docs/tbls.yml'
       - '.github/workflows/deploy-to-github-pages.yml'
 
 jobs:
@@ -46,26 +47,16 @@ jobs:
         run: tbls doc
         working-directory: ./docs
 
-      - name: Upload to artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: '.'
+      - name: commit database document
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "generate database document from actions"
+          git push
+        working-directory: ./docs
 
       - name: Clean up Docker images
         if: always()
         run: docker-compose down --rmi all --volumes
         continue-on-error: true
-
-  deploy:
-    needs: build-and-upload
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
